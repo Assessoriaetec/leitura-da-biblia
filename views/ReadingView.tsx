@@ -111,15 +111,15 @@ const ReadingView: React.FC = () => {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-in slide-in-from-bottom-4 duration-500 mt-4">
-      <nav className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-sm">
-          <span className="text-slate-400">Home</span>
+      <nav className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="flex items-center gap-2 text-sm flex-wrap">
+          <Link to="/" className="text-slate-400 hover:text-primary transition-colors">Home</Link>
           <span className="text-slate-400">/</span>
           <span className="text-slate-400">Plano Anual</span>
           <span className="text-slate-400">/</span>
           <span className="font-bold text-primary">Dia {currentDay}</span>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center justify-between w-full md:w-auto gap-3">
           <button
             onClick={() => navigateDay('prev')}
             disabled={currentDay <= 1}
@@ -143,7 +143,7 @@ const ReadingView: React.FC = () => {
           <span className="px-4 py-1.5 rounded-full bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest border border-primary/20">{dayData?.category}</span>
           <span className="px-4 py-1.5 rounded-full bg-slate-100 dark:bg-zinc-900 text-slate-500 text-[10px] font-black uppercase tracking-widest border border-slate-200 dark:border-zinc-800 tracking-tighter">Leitura Diária</span>
         </div>
-        <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-slate-900 dark:text-white leading-none">
+        <h1 className="text-4xl md:text-7xl font-black tracking-tighter text-slate-900 dark:text-white leading-tight md:leading-none">
           {dayData?.passage}
         </h1>
         <p className="text-2xl font-bold text-primary tracking-tight">Tema: {dayData?.theme}</p>
@@ -153,14 +153,10 @@ const ReadingView: React.FC = () => {
         <div className="lg:col-span-3 space-y-6">
           <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm relative overflow-hidden">
             <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 blur-3xl -mr-24 -mt-24 rounded-full pointer-events-none" />
-            <div className="flex justify-between items-center mb-8 relative z-10">
-              <div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-primary mb-1 block">Leitura de Hoje</span>
-                <h2 className="text-3xl font-black text-slate-900">{dayData?.passage}</h2>
-              </div>
-              <div className="flex gap-2">
+            <div className="flex justify-end items-center mb-6 relative z-10 w-full">
+              <div className="flex gap-2 w-full md:w-auto">
                 <select
-                  className="bg-slate-50 border-slate-200 rounded-xl text-xs font-bold py-2 px-3 focus:ring-primary"
+                  className="bg-slate-50 border-slate-200 rounded-xl text-xs font-bold py-2 px-3 focus:ring-primary w-full md:w-auto"
                   value={version}
                   onChange={(e) => setVersion(e.target.value)}
                 >
@@ -169,7 +165,7 @@ const ReadingView: React.FC = () => {
                   <option value="aa">AA (Almeida Atualizada)</option>
                   <option value="kjv">KJV (King James Version)</option>
                 </select>
-                <button className="p-2 rounded-xl hover:bg-slate-50 text-slate-400">
+                <button className="p-2 rounded-xl hover:bg-slate-50 text-slate-400 shrink-0">
                   <span className="material-symbols-outlined">volume_up</span>
                 </button>
               </div>
