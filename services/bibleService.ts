@@ -22,8 +22,14 @@ export interface BibleChapter {
 class BibleService {
     private baseUrl = 'https://www.abibliadigital.com.br/api';
     private version = 'nvi'; // Nova Versão Internacional
+    private cache = new Map<string, string[]>();
 
     async getChapterVerses(bookAbbrev: string, chapter: number): Promise<string[]> {
+        const cacheKey = `${bookAbbrev.toLowerCase()}-${chapter}`;
+        if (this.cache.has(cacheKey)) {
+            console.log(`Serving ${cacheKey} from cache`);
+            return this.cache.get(cacheKey)!;
+        }
         // Try bible-api.com first (Primary - More reliable)
         try {
             // Map abbreviations to full book names for bible-api.com
@@ -55,7 +61,9 @@ class BibleService {
             if (response.ok) {
                 const data = await response.json();
                 if (data.verses && data.verses.length > 0) {
-                    return data.verses.map((v: any) => v.text.replace(/\s+$/, ''));
+                    const verses = data.verses.map((v: any) => v.text.replace(/\s+$/, ''));
+                    this.cache.set(cacheKey, verses);
+                    return verses;
                 }
             }
         } catch (error) {
@@ -70,7 +78,9 @@ class BibleService {
             if (response.ok) {
                 const data: BibleChapter = await response.json();
                 if (data.verses && data.verses.length > 0) {
-                    return data.verses.map(v => v.text);
+                    const verses = data.verses.map(v => v.text);
+                    this.cache.set(cacheKey, verses);
+                    return verses;
                 }
             }
         } catch (fallbackError) {
