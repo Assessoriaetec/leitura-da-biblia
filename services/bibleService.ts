@@ -30,44 +30,54 @@ class BibleService {
             console.log(`Serving ${cacheKey} from cache`);
             return this.cache.get(cacheKey)!;
         }
-        // Try bible-api.com first (Primary - More reliable)
-        try {
-            // Map abbreviations to full book names for bible-api.com
-            const bookNameMap: Record<string, string> = {
-                'gn': 'genesis', 'ex': 'exodus', 'lv': 'leviticus', 'nm': 'numbers',
-                'dt': 'deuteronomy', 'js': 'joshua', 'jz': 'judges', 'rt': 'ruth',
-                '1sm': '1samuel', '2sm': '2samuel', '1rs': '1kings', '2rs': '2kings',
-                '1cr': '1chronicles', '2cr': '2chronicles', 'sl': 'psalms', 'pv': 'proverbs',
-                'ec': 'ecclesiastes', 'ct': 'songofsolomon', 'is': 'isaiah', 'jr': 'jeremiah',
-                'lm': 'lamentations', 'ez': 'ezekiel', 'dn': 'daniel', 'os': 'hosea',
-                'jl': 'joel', 'am': 'amos', 'ob': 'obadiah', 'jn': 'jonah', 'mq': 'micah',
-                'na': 'nahum', 'hc': 'habakkuk', 'sf': 'zephaniah', 'ag': 'haggai',
-                'zc': 'zechariah', 'ml': 'malachi', 'mt': 'matthew', 'mc': 'mark',
-                'lc': 'luke', 'jo': 'john', 'at': 'acts', 'rm': 'romans',
-                '1co': '1corinthians', '2co': '2corinthians', 'gl': 'galatians',
-                'ef': 'ephesians', 'fp': 'philippians', 'cl': 'colossians',
-                '1ts': '1thessalonians', '2ts': '2thessalonians', '1ti': '1timothy',
-                '2ti': '2timothy', 'tt': 'titus', 'fm': 'philemon', 'hb': 'hebrews',
-                'tg': 'james', '1pe': '1peter', '2pe': '2peter', '1jo': '1john',
-                '2jo': '2john', '3jo': '3john', 'jd': 'jude', 'ap': 'revelation',
-                'ne': 'nehemiah', 'et': 'esther'
-            };
+        // Try bible-api.com only for supported versions
+        const bibleApiMapping: Record<string, string> = {
+            'aa': 'almeida', // Default Almeida on bible-api
+            'kjv': 'kjv',
+            'web': 'web'
+        };
 
-            const bookName = bookNameMap[bookAbbrev.toLowerCase()] || bookAbbrev;
-            const fallbackUrl = `https://bible-api.com/${bookName}+${chapter}?translation=almeida`;
-            // Add cache busting to prevent stale responses
-            const response = await fetch(fallbackUrl);
+        const mappedVersion = bibleApiMapping[version.toLowerCase()];
 
-            if (response.ok) {
-                const data = await response.json();
-                if (data.verses && data.verses.length > 0) {
-                    const verses = data.verses.map((v: any) => v.text.replace(/\s+$/, ''));
-                    this.cache.set(cacheKey, verses);
-                    return verses;
+        if (mappedVersion) {
+            try {
+                // Map abbreviations to full book names for bible-api.com
+                const bookNameMap: Record<string, string> = {
+                    'gn': 'genesis', 'ex': 'exodus', 'lv': 'leviticus', 'nm': 'numbers',
+                    'dt': 'deuteronomy', 'js': 'joshua', 'jz': 'judges', 'rt': 'ruth',
+                    '1sm': '1samuel', '2sm': '2samuel', '1rs': '1kings', '2rs': '2kings',
+                    '1cr': '1chronicles', '2cr': '2chronicles', 'sl': 'psalms', 'pv': 'proverbs',
+                    'ec': 'ecclesiastes', 'ct': 'songofsolomon', 'is': 'isaiah', 'jr': 'jeremiah',
+                    'lm': 'lamentations', 'ez': 'ezekiel', 'dn': 'daniel', 'os': 'hosea',
+                    'jl': 'joel', 'am': 'amos', 'ob': 'obadiah', 'jn': 'jonah', 'mq': 'micah',
+                    'na': 'nahum', 'hc': 'habakkuk', 'sf': 'zephaniah', 'ag': 'haggai',
+                    'zc': 'zechariah', 'ml': 'malachi', 'mt': 'matthew', 'mc': 'mark',
+                    'lc': 'luke', 'jo': 'john', 'at': 'acts', 'rm': 'romans',
+                    '1co': '1corinthians', '2co': '2corinthians', 'gl': 'galatians',
+                    'ef': 'ephesians', 'fp': 'philippians', 'cl': 'colossians',
+                    '1ts': '1thessalonians', '2ts': '2thessalonians', '1ti': '1timothy',
+                    '2ti': '2timothy', 'tt': 'titus', 'fm': 'philemon', 'hb': 'hebrews',
+                    'tg': 'james', '1pe': '1peter', '2pe': '2peter', '1jo': '1john',
+                    '2jo': '2jo', '3jo': '3jo', 'jd': 'jude', 'ap': 'revelation',
+                    'ne': 'nehemiah', 'et': 'esther'
+                };
+
+                const bookName = bookNameMap[bookAbbrev.toLowerCase()] || bookAbbrev;
+                const fallbackUrl = `https://bible-api.com/${bookName}+${chapter}?translation=${mappedVersion}`;
+                // Add cache busting to prevent stale responses
+                const response = await fetch(fallbackUrl);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.verses && data.verses.length > 0) {
+                        const verses = data.verses.map((v: any) => v.text.replace(/\s+$/, ''));
+                        this.cache.set(cacheKey, verses);
+                        return verses;
+                    }
                 }
+            } catch (error) {
+                console.warn('Primary API (bible-api) failed, trying fallback:', error);
             }
-        } catch (error) {
-            console.warn('Primary API (bible-api) failed, trying fallback:', error);
         }
 
         // Fallback to abibliadigital
