@@ -1,0 +1,66 @@
+[
+    {
+        "day": 1,
+        "passage": "Gênesis 1",
+        "theme": "A Criação",
+        "category": "Pentateuco",
+        "book": "Gênesis",
+        "estimatedTime": "10 min"
+    },
+    {
+        "day": 2,
+        "passage": "Gênesis 2",
+        "theme": "O Jardim do Éden",
+        "category": "Pentateuco",
+        "book": "Gênesis",
+        "estimatedTime": "10 min"
+    },
+    {
+        "day": 3,
+        "passage": "Gênesis 3",
+        "theme": "A Queda do Homem",
+        "category": "Pentateuco",
+        "book": "Gênesis",
+        "estimatedTime": "12 min"
+    },
+    {
+        "day": 4,
+        "passage": "Gênesis 4",
+        "theme": "Caim e Abel",
+        "category": "Pentateuco",
+        "book": "Gênesis",
+        "estimatedTime": "10 min"
+    },
+    {
+        "day": 5,
+        "passage": "Gênesis 5",
+        "theme": "A Descendência de Adão",
+        "category": "Pentateuco",
+        "book": "Gênesis",
+        "estimatedTime": "8 min"
+    },
+    {
+        "day": 6,
+        "passage": "Gênesis 6",
+        "theme": "Noé e a Arca",
+        "category": "Pentateuco",
+        "book": "Gênesis",
+        "estimatedTime": "12 min"
+    },
+    {
+        "day": 45,
+        "passage": "Salmos 23",
+        "theme": "O Senhor é o Meu Pastor",
+        "category": "Poéticos",
+        "book": "Salmos",
+        "estimatedTime": "5 min"
+    },
+    {
+        "day": 288,
+        "passage": "Salmos 119",
+        "theme": "O Preceito do Senhor",
+        "category": "Poéticos",
+        "book": "Salmos",
+        "estimatedTime": "25 min"
+    }
+]

@@ -1,0 +1,8 @@
+{
+  "name": "Plano de Leitura Célula Raiz de Davi",
+  "description": "Uma plataforma completa de acompanhamento de leitura bíblica anual com recursos de comunidade e painel administrativo.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
